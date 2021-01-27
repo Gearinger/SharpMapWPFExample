@@ -2,7 +2,7 @@
 ** Copyright © 2020 广州南方智能技术有限公司 All rights reserved.
 ***********************************************************************
 ** CLR 版本:4.0.30319.42000
-** 创建时间:2020/10/16 15:34:43
+** 创建时间:2020/10/16 21:37:46
 ** 作    者:GuoYingdong
 ** 说    明:
 ** ============================== 修改 ============================== **
@@ -10,23 +10,25 @@
 ** 作    者:
 ** 说    明:
 **********************************************************************/
-using SharpMap.Layers;
-using SharpMapExample.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpMap.Layers;
+using SharpMapExample.Common;
 
-namespace SharpMapExample.Common
+namespace SharpMapExample.Models
 {
-    public static class ExtendClass
+    public class Layer:NotifyPropertyBase
     {
-        public static void Add2(this LayerCollection layerCollection, ILayer layer)
-        {
-            layerCollection.Add(layer);
-            //MainViewModel.Layers = new System.Collections.ObjectModel.ObservableCollection<string>();
-            //layerCollection.ToList().ForEach(p=> MainViewModel.Layers.Add(p.LayerName));
-        }
+        private string name;
+
+        public string Name { get => name; set
+            {
+                name = value;
+                OnPropertyChanged();
+            }
+            }
     }
 }

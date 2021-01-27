@@ -1,4 +1,5 @@
 ﻿using SharpMap.Forms;
+using SharpMap.Forms.ToolBar;
 using SharpMapExample.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,9 @@ namespace SharpMapExample.Views
         {
             InitializeComponent();
             DataContext = new MainViewModel(MapBox.Child as MapBox);
+            var CurrentMapZoomToolStrip = (MapZoomToolStrip.Child as MapZoomToolStrip);
+            CurrentMapZoomToolStrip.Enabled = true;
+            CurrentMapZoomToolStrip.MapControl = MapBox.Child as MapBox;
         }
     }
 }

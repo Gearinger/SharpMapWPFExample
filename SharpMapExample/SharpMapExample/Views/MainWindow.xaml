@@ -3,42 +3,86 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:VM="clr-namespace:SharpMapExample.ViewModels"
         xmlns:local="clr-namespace:SharpMapExample.Views"
         xmlns:smui2="clr-namespace:SharpMap.Forms.ToolBar;assembly=SharpMap.UI"
         xmlns:smui="clr-namespace:SharpMap.Forms;assembly=SharpMap.UI"
-        xmlns:vm="clr-namespace:SharpMapExample.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="1500">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition MinHeight="25" Height="auto"/>
             <RowDefinition MinHeight="25" Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <WrapPanel>
+        <Menu Grid.Row="0" Height="25">
+            <MenuItem Padding="0"
+                      Height="25" Width="80">
+                <MenuItem.Header>
+                    <Grid Height="23" Width="80">
+                        <TextBlock Text="文件" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                </MenuItem.Header>
+                <MenuItem Header="打开" Command="{Binding }" InputGestureText="Ctrl+N"  Icon="" Height="25"/>
+                <MenuItem Header="新建" Command="{Binding }" Icon="" Height="25"/>
+                <MenuItem Header="保存" Command="{Binding }" Icon="" Height="25"/>
+                <MenuItem Header="推出" Command="{Binding }" Icon="" Height="25"/>
+            </MenuItem>
+            <MenuItem Padding="0"
+                      Height="25" Width="80">
+                <MenuItem.Header>
+                    <Grid Height="23" Width="80">
+                        <TextBlock Text="选项" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                </MenuItem.Header>
+                <MenuItem Header="" InputGestureText="A"  Command="{Binding }" Icon="" Height="25" Width="80"/>
+                <MenuItem Header="" Command="{Binding }" Icon="" Height="25"/>
+                <MenuItem Header="" Command="{Binding }" Icon="" Height="25"/>
+                <MenuItem Header="" Command="{Binding }" Icon="" Height="25"/>
+            </MenuItem>
+            <MenuItem Padding="0"
+                      Height="25" Width="80">
+                <MenuItem.Header>
+                    <Grid Height="23" Width="80">
+                        <TextBlock Text="窗口" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                </MenuItem.Header>
+                <MenuItem Header="图层" Command="{Binding }" Icon="" Height="25"/>
+                <MenuItem Header="目录" Command="{Binding }" Icon="" Height="25"/>
+                <MenuItem Header="工具箱" Command="{Binding }" Icon="" Height="25"/>
+                <MenuItem Header="命令行" Command="{Binding }" Icon="" Height="25"/>
+            </MenuItem>
+        </Menu>
+        <WrapPanel Grid.Row="1">
             <WrapPanel Grid.Row="0">
-                <WindowsFormsHost AllowDrop="True">
-                    <smui2:MapZoomToolStrip/>
+                <WindowsFormsHost x:Name="MapZoomToolStrip" AllowDrop="True">
+                    <smui2:MapZoomToolStrip Enabled="True"/>
                 </WindowsFormsHost>
                 <WindowsFormsHost AllowDrop="True">
-                    <smui2:MapDigitizeGeometriesToolStrip/>
+                    <smui2:MapDigitizeGeometriesToolStrip  Enabled="True"/>
                 </WindowsFormsHost>
                 <WindowsFormsHost AllowDrop="True">
-                    <smui2:MapQueryToolStrip/>
+                    <smui2:MapQueryToolStrip  Enabled="True"/>
                 </WindowsFormsHost>
                 <WindowsFormsHost AllowDrop="True">
-                    <smui2:MapVariableLayerToolStrip/>
+                    <smui2:MapVariableLayerToolStrip  Enabled="True"/>
                 </WindowsFormsHost>
             </WrapPanel>
 
         </WrapPanel>
-        <GridSplitter Grid.Row="1" Height="3" Margin="0,1,0,1"
+        <GridSplitter Grid.Row="2" Height="3" Margin="0,1,0,1"
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-        <DockPanel Grid.Row="2">
-            <ListBox x:Name="ListBox" ItemsSource="{Binding Layers}"
-                     DockPanel.Dock="Left" Width="200" MinWidth="100">
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="ListBox" Grid.Column="0"
+                     ItemsSource="{Binding Layers}"
+                     MinWidth="200">
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="添加图层" Command="{Binding AddLayerCommand}"/>
@@ -50,16 +94,24 @@
                         <WrapPanel VerticalAlignment="Center">
                             <TextBlock Text="▧ "/>
                             <TextBlock Text="{Binding LayerName}" 
-                                       Width="80" Height="25" Background="Red" Padding="0" FontSize="15"
+                                       Width="80" Height="25" Padding="0" FontSize="15"
                                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </WrapPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <WindowsFormsHost Name="MapBox" Grid.Column="1">
+            <GridSplitter Grid.Column="1" Width="1" Margin="1,0,1,0" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+            <WindowsFormsHost Name="MapBox" Grid.Column="2">
                 <smui:MapBox/>
             </WindowsFormsHost>
-        </DockPanel>
-
+            <TabControl Grid.Column="3" 
+                        MinWidth="200" TabStripPlacement="Right">
+                <TabItem Header="wqe"/>
+                <TabItem Header="wqe" Height="18" VerticalAlignment="Top"/>
+            </TabControl>
+        </Grid>
+        <StatusBar Grid.Row="4" VerticalAlignment="Stretch">
+            <TextBlock Text="StatusBar For Test!"/>
+        </StatusBar>
     </Grid>
 </Window>

@@ -27,7 +27,7 @@ using System.Windows.Forms;
 
 namespace SharpMapExample.ViewModels
 {
-    public class MainViewModel: NotifyPropertyBase
+    public class MainViewModel : NotifyPropertyBase
     {
         public MainViewModel(MapBox mapBox)
         {
@@ -39,10 +39,19 @@ namespace SharpMapExample.ViewModels
         }
         public static MapBox MapBox { get; set; }
         public static Map Map { get; set; }
-        public static ObservableCollection<Layer> Layers { get; set; } = new ObservableCollection<Layer>();
+        private ObservableCollection<ILayer> layers = new ObservableCollection<ILayer>();
+        public ObservableCollection<ILayer> Layers
+        {
+            get => layers;
+            set
+            {
+                layers = value;
+            }
+        }
 
         #region Command
-        public BaseCommand AddLayerCommand => new BaseCommand(()=> {
+        public BaseCommand AddLayerCommand => new BaseCommand(() =>
+        {
             var ofd = new OpenFileDialog();
             ofd.Filter = @"Shapefiles (*.shp)|*.shp";
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -59,13 +68,16 @@ namespace SharpMapExample.ViewModels
                     lay.ReverseCoordinateTransformation = fact.CreateFromCoordinateSystems(ProjNet.CoordinateSystems.ProjectedCoordinateSystem.WebMercator,
                         ds.CoordinateSystem);
                 }
-                Map.Layers.Add2(lay);
+                Map.Layers.Add(lay);
+                Layers = new ObservableCollection<ILayer>();
+                Map.Layers.ToList().ForEach(p => Layers.Add(p));
                 if (Map.Layers.Count == 1)
                 {
                     Envelope env = lay.Envelope;
                     Map.ZoomToBox(env);
                 }
                 MapBox.Refresh();
+                OnPropertyChanged(nameof(Layers));
             }
         });
         #endregion
@@ -73,13 +85,18 @@ namespace SharpMapExample.ViewModels
         #region methods
         public void LayersChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Layers.ToList().ForEach(p=>
+            Layers.ToList().ForEach(p =>
             {
-                if (Map.Layers.FirstOrDefault(a=>a==p)==null)
+                if (Map.Layers.FirstOrDefault(a => a == p) == null)
                 {
                     Map.Layers.Add(p);
                 }
             });
+        }
+
+        public void SelectFeature(MouseEventArgs e)
+        {
+
         }
         #endregion
     }

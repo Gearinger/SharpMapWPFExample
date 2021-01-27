@@ -38,4 +38,15 @@ namespace SharpMapExample.Common
             return this.MemberwiseClone();
         }
     }
+
+    public static class StaticNotifyPropertyBase
+    {
+        public static event PropertyChangedEventHandler StaticPropertyChanged;
+
+
+        public static void OnStaticPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            StaticPropertyChanged?.Invoke(StaticPropertyChanged, new PropertyChangedEventArgs(propertyName));
+        }
+    }
 }
